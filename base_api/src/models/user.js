@@ -11,6 +11,7 @@ const User = database.define('users',{
   firstName:Sequelize.STRING,
   lastName:Sequelize.STRING,
   email:Sequelize.STRING,
+  password:Sequelize.STRING
 })
 
 module.exports = User;
