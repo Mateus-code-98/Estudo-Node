@@ -72,4 +72,4 @@ const DeletarUsuario = async (req,res,next) => {
     }
 }
 
-module.exports = { NovoUsuario, TodosUsuarios, BuscarUsuario, EditarUsuario,DeletarUsuario }
+module.exports = { NovoUsuario, TodosUsuarios, BuscarUsuario, EditarUsuario, DeletarUsuario }
