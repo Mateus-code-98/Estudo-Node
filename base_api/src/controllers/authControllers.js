@@ -1,8 +1,16 @@
-const   User      = require('./../models/user')
-const { compare } = require('bcryptjs')
+const   User             = require('./../models/user')
+const { compare }        = require('bcryptjs')
+const { JsonValidation } = require('../services/validations')
 
 const Login = async (req,res,next) => {
+
+    // Valida se todos o campos obrigatórios foram preenchidos
+    const validation = JsonValidation(req.body,['email','password'])
+    if(!validation.status)return res.json({message:validation.message})
+
+    // Pega os atributos passados no corpo da requisição
     const { email, password } = req.body
+
     try{
         //Verifica se o email passado no corpo da requisição é de algum usuário
         const resultado = await User.findOne({where:{email}})
