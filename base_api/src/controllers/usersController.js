@@ -14,10 +14,10 @@ const NovoUsuario = async (req,res,next) => {
     const { firstName, lastName, email, password } = req.body
 
     // Criptografa a senha passada no corpo da requisição
-    password = await hash(password,10)
+    const HashPassword = await hash(password,10)
     
     try{
-        const resultado = await User.create({firstName,lastName,email,password})
+        const resultado = await User.create({firstName,lastName,email,password:HashPassword})
         return res.json(resultado)
     }catch(err){
         return res.json(err)
