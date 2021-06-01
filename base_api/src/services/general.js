@@ -4,11 +4,11 @@ const JsonValidation = (Obj,Attrs) => {
     return {status:true}
 }
 
-// Retorna quais foram os atributos(Attrs) passados em um objeto JSON(Obj) no corpo de uma requisição
-const JsonScanner = (Obj) => {
-    const Attrs = []
-    for (let property in Obj)Attrs.push(property)
-    return Attrs
+// Retorna o objeto JSON(Obj) apenas com os atributos necessários
+const JsonOnlyAttrs = (Obj,Attrs) => {
+    const newObj = {}
+    for( let i = 0 ; i < Attrs.length ; i++)if(Obj[Attrs[i]])newObj[Attrs[i]] = Obj[Attrs[i]]
+    return newObj
 }
 
-module.exports = { JsonValidation, JsonScanner }
+module.exports = { JsonValidation, JsonOnlyAttrs }

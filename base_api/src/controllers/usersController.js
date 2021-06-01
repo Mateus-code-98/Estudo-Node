@@ -1,8 +1,8 @@
 const   User   = require('./../models/user')
 const { hash } = require('bcryptjs')
 const { JsonValidation, 
-        JsonScanner 
-      } = require('../services/validations')
+        JsonOnlyAttrs,
+      } = require('../services/general')
 
 const NovoUsuario = async (req,res,next) => {
 
@@ -17,8 +17,12 @@ const NovoUsuario = async (req,res,next) => {
     const HashPassword = await hash(password,10)
     
     try{
-        const resultado = await User.create({firstName,lastName,email,password:HashPassword})
-        return res.json(resultado)
+        const newUser = await User.create({firstName,lastName,email,password:HashPassword})
+
+        // Informa apenas dados não sensíveis do usuário
+        const infoUser = JsonOnlyAttrs(newUser,['id','firstName','lastName','createdAt','updatedAt'])
+
+        return res.json(infoUser)
     }catch(err){
         return res.json(err)
     }
@@ -26,8 +30,16 @@ const NovoUsuario = async (req,res,next) => {
 
 const TodosUsuarios = async (req,res,next) => {
     try{
-        const resultado = await User.findAll()
-        return res.json(resultado)
+        // Busca todos os usuários
+        const users = await User.findAll()
+
+        // Informa apenas os dados não sensíveis dos usuários
+        const infoUsers = []
+        users.map((user)=>{
+            infoUsers.push(JsonOnlyAttrs(user,['id','firstName','lastName','createdAt','updatedAt']))
+        })
+
+        return res.json(infoUsers)
     }catch(err){
         return res.json(err)
     }
@@ -36,24 +48,42 @@ const TodosUsuarios = async (req,res,next) => {
 const BuscarUsuario = async (req,res,next) => {
     const { id } = req.params
     try{
-        const resultado = await User.findByPk(id)
-        return res.json(resultado)
+        // Busca o usuário pelo 'id' passado por parâmetro
+        const user = await User.findByPk(id)
+
+        // Informa apenas os dados não sensíveis do usuário
+        const infoUser = JsonOnlyAttrs(user,['id','firstName','lastName','createdAt','updatedAt'])
+
+        return res.json(infoUser)
     }catch(err){
         return res.json(err)
     }
 }
 
 const EditarUsuario = async (req,res,next) => {
-    const   Attrs = JsonScanner(req.body)
+    // Definição dos atributos que são permitidos alterações nessa rota
+    const Attrs = ['firstName','lastName']
+
+    // Pega do corpo da requisição apenas os atributos permitidos
+    const AttrsAllowed = JsonOnlyAttrs(req.body,Attrs)
+
     const { id }  = req.params
     try{
-        const resultado = await User.findByPk(id)
-        Attrs.forEach((attr)=>{
-            resultado[attr] = req.body[attr]
-        })
-        await resultado.save()
+        // Busca o usuário pelo 'id' passado no corpo da requisição
+        const user = await User.findByPk(id)
 
-        return res.json(resultado)
+        // Altera os atributos do usuário
+        Attrs.forEach((attr)=>{
+            if(AttrsAllowed[attr])user[attr] = AttrsAllowed[attr]
+        })
+
+        // Salva as alterações dos atributos do usuário
+        await user.save()
+
+        // Informa apenas os dados não sensíveis do usuário
+        const infoUser = JsonOnlyAttrs(user,['id','firstName','lastName','createdAt','updatedAt'])
+
+        return res.json(infoUser)
     }catch(err){
         return res.json(err)
     }
