@@ -1,6 +1,6 @@
 const { Router }    = require('express');
-const   AuthRouter  = require('./auth.routes');
-const   UsersRouter = require('./users.routes')
+const   AuthRouter  = require('./authRoutes');
+const   UsersRouter = require('./usersRoutes')
 const   routes      = Router()
 
 routes.use('/users',UsersRouter)

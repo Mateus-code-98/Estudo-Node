@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { VerificaID } = require('../middlewares/Validation');
-const { NovoUsuario, TodosUsuarios, BuscarUsuario, EditarUsuario, DeletarUsuario } = require('./../controllers/usersController')
+const { NovoUsuario, TodosUsuarios, BuscarUsuario, EditarUsuario, DeletarUsuario } = require('../controllers/usersController')
 
 const UsersRouter = Router();
 
