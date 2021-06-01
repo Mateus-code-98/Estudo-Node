@@ -11,6 +11,7 @@ const JsonOnlyAttrs = (Obj,Attrs) => {
     return newObj
 }
 
+// Retorna se o objeto JSON(obj) possui algum dos atríbutos únicos(Attrs) já cadastrado por outro usuário 
 const CheckOnlyAttrs = async (Model,Attrs,Obj) => {
     for(let i = 0; i < Attrs.length ; i++)
     {
