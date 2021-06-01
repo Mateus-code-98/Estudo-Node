@@ -11,4 +11,14 @@ const JsonOnlyAttrs = (Obj,Attrs) => {
     return newObj
 }
 
-module.exports = { JsonValidation, JsonOnlyAttrs }
+const CheckOnlyAttrs = async (Model,Attrs,Obj) => {
+    for(let i = 0; i < Attrs.length ; i++)
+    {
+        let user = await Model.findOne({where:{[Attrs[i]]:Obj[Attrs[i]]}})
+        if(user)return {status:false,message:`Atributo ${Attrs[i]} já foi cadastrado por outro usuário`}
+    }
+   
+    return {status:true}
+}
+
+module.exports = { JsonValidation, JsonOnlyAttrs, CheckOnlyAttrs }

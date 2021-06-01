@@ -2,16 +2,21 @@ const   User   = require('./../models/user')
 const { hash } = require('bcryptjs')
 const { JsonValidation, 
         JsonOnlyAttrs,
+        CheckOnlyAttrs,
       } = require('../services/general')
 
 const NovoUsuario = async (req,res,next) => {
 
     // Valida se todos o campos obrigatórios foram preenchidos
-    const validation = JsonValidation(req.body,['firstName','lastName','email','password'])
-    if(!validation.status)return res.json({message:validation.message})
+    const validationRequiredAttrs = JsonValidation(req.body,['firstName','lastName','email','password'])
+    if(!validationRequiredAttrs.status)return res.json({message:validationRequiredAttrs.message})
 
     // Pega os atributos passados no corpo da requisição
     const { firstName, lastName, email, password } = req.body
+
+    // Verifica se o email passado no corpo da requisição já foi cadastrado por outro usuário
+    const validationOnlyAttr = await CheckOnlyAttrs(User,['email'],req.body)
+    if(!validationOnlyAttr.status)return res.json({message:validationOnlyAttr.message})
 
     // Criptografa a senha passada no corpo da requisição
     const HashPassword = await hash(password,10)
