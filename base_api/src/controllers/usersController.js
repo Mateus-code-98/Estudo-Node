@@ -128,9 +128,9 @@ const Login = async (req,res,next) => {
         if(resu)
         {
             // Gera token de acesso ao usuário logado
-            const token = sign({},'32341e3d77060d8c5bafe86d085562cb',{
+            const token = sign({},process.env.JWT_SECRET,{
                 subject:user.id,
-                expiresIn:'1d'
+                expiresIn:process.env.JWT_EXPIRESIN
             })
 
             // Informa apenas dados não sensíveis do usuário
