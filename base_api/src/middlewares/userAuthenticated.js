@@ -1,5 +1,5 @@
 const { verify } = require('jsonwebtoken')
-const AppError = require('../errors/AppError')
+const   AppError = require('../errors/AppError')
 
 const UserAuthenticated = (req,res,next) => {
     const authHeader = req.headers.authorization
@@ -19,8 +19,6 @@ const UserAuthenticated = (req,res,next) => {
     }catch(err){
         return res.status(400).json(err)
     }
-    
-
 }
 
 module.exports = { UserAuthenticated }
