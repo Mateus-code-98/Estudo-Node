@@ -1,7 +1,13 @@
-const { Router } = require('express');
-const { VerificaID } = require('../middlewares/Validation');
-const { NovoUsuario, TodosUsuarios, BuscarUsuario, EditarUsuario, DeletarUsuario, Login } = require('../controllers/usersController');
+const { Router }            = require('express');
+const { VerificaID }        = require('../middlewares/idValidation');
 const { UserAuthenticated } = require('../middlewares/userAuthenticated');
+const { NovoUsuario, 
+        TodosUsuarios,
+        BuscarUsuario, 
+        EditarUsuario, 
+        DeletarUsuario, 
+        Login 
+      } = require('../controllers/usersController');
 
 const UsersRouter = Router();
 

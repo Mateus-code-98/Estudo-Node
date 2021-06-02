@@ -1,5 +1,5 @@
 const { validate } = require('uuid')
-const AppError = require('../errors/AppError')
+const   AppError   = require('../errors/AppError')
 
 const VerificaID = (req,res,next) => {
     const { id } = req.params 
