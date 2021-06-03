@@ -1,21 +1,18 @@
-const { Router }            = require('express');
-const { VerificaID }        = require('../middlewares/idValidation');
-const { UserAuthenticated } = require('../middlewares/userAuthenticated');
-const { NovoUsuario, 
-        TodosUsuarios,
-        BuscarUsuario, 
-        EditarUsuario, 
-        DeletarUsuario, 
-        Login 
-      } = require('../controllers/usersController');
+const { Router }                                                                  = require('express');
+const { VerificaId_User }                                                         = require('../middlewares/idValidation');
+const { NovoUsuario, TodosUsuarios, BuscarUsuario, EditarUsuario, DeletarUsuario} = require('../controllers/usersController');
+const { TodosPostsDoUsusario, NovoPost }                                          = require('../controllers/postsController');
 
 const UsersRouter = Router();
 
-UsersRouter.get   ( '/'      , TodosUsuarios              ) 
-UsersRouter.post  ( '/'      , NovoUsuario                )
-UsersRouter.put   ( '/:id'   , VerificaID, EditarUsuario  )
-UsersRouter.delete( '/:id'   , VerificaID, DeletarUsuario )
-UsersRouter.get   ( '/:id'   , VerificaID, UserAuthenticated , BuscarUsuario  )
-UsersRouter.post  ( '/login' , Login                      )
+UsersRouter.get   ( '/'        , TodosUsuarios                    ) // LISTAR TODOS OS USUÁRIOS
+UsersRouter.post  ( '/'        , NovoUsuario                      ) // CRIAR NOVO USUÁRIO
+UsersRouter.put   ( '/:idUser' , VerificaId_User , EditarUsuario  ) // EDITAR  UM USUÁRIO
+UsersRouter.delete( '/:idUser' , VerificaId_User , DeletarUsuario ) // DELETAR UM USUÁRIO
+UsersRouter.get   ( '/:idUser' , VerificaId_User , BuscarUsuario  ) // BUSCAR  UM USUÁRIO
+
+UsersRouter.get   ( '/:idUser/posts'         , VerificaId_User, TodosPostsDoUsusario          ) // LISTAR TODOS OS POSTS DE UM USUÁRIO
+UsersRouter.post  ( '/:idUser/posts'         , VerificaId_User, NovoPost                      ) // CRIAR NOVO POST       DE UM USUÁRIO
+
 
 module.exports = UsersRouter;

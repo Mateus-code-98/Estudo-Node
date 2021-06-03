@@ -8,8 +8,7 @@ const User = database.define('users',{
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
   },
-  firstName:Sequelize.STRING,
-  lastName:Sequelize.STRING,
+  name:Sequelize.STRING,
   email:Sequelize.STRING,
   password:Sequelize.STRING
 })
